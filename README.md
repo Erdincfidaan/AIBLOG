@@ -1,232 +1,262 @@
-# AIBlog REST API
+AIBlog REST API
+A production-ready Spring Boot REST API for a comprehensive blog platform with AI-powered content generation, JWT-based authentication, and role-based access control.
+Overview
+AIBlog is a complete blog management system built with Spring Boot that combines secure JWT authentication, intelligent role-based authorization, and seamless integration with Google's Gemini API for AI-assisted content creation. The application is containerized with Docker for consistent deployment across environments.
+Features
+Authentication and Security
 
-## Overview
-AIBlog is a Spring Boot REST API for a blog platform. It provides JWT-based authentication and role-based authorization, email verification via SMTP, CRUD operations for posts, categories, and comments, and integration with the Gemini API for AI-assisted content generation.
+User registration and login with secure password handling
+JWT-based stateless authentication
+Role-based access control (USER and ADMIN roles)
+Email verification via SMTP for account activation
+Password change functionality
 
-The application persists data using PostgreSQL with Spring Data JPA, uses MapStruct for DTO mapping, and centralizes error handling via a global exception handler. The project is containerized using Docker Compose to ensure consistent local development environments.
+Blog Management
 
----
+Full CRUD operations for blog posts
+Category management (admin-exclusive)
+Comment system for reader engagement
+Role-based endpoint protection
 
-## Features
+AI Integration
 
-### Authentication & Security
-- User registration and login
-- JWT-based stateless authentication
-- Role-based authorization (USER / ADMIN)
-- Email verification via SMTP
+Google Gemini API integration for intelligent content generation
+Admin endpoint for AI-assisted post creation by category
 
-### Blog Management
-- Post CRUD operations
-- Category management (admin-only)
-- Comment CRUD operations
+Data Persistence
 
-### AI Integration
-- Gemini API integration for content generation
-- Admin endpoint for AI-generated post creation
+PostgreSQL database with robust schema management
+Spring Data JPA for efficient data access
+Hibernate ORM with automatic schema updates
 
-### Persistence & Architecture
-- PostgreSQL database
-- Spring Data JPA repositories
-- Layered architecture (Controller / Service / Repository)
-- DTO mapping using MapStruct
-- Global exception handling
+Architecture and Code Quality
 
-### Developer Experience
-- Docker Compose support
-- Externalized configuration using .env
-- Clean modular project structure
+Layered architecture (Controller → Service → Repository → Entity)
+DTO mapping using MapStruct for clean data transfer
+Global exception handling with custom error responses
+Externalized configuration management
 
----
+Deployment
 
-## Architecture
+Docker Compose for local development
+Multi-container setup with PostgreSQL database
+Environment-based configuration via .env file
 
-- Controller Layer: Handles HTTP requests and responses
-- Service Layer: Contains business logic and rules
-- Repository Layer: Handles database operations via JPA
-- Domain Layer: JPA entities representing core models
-- Cross-cutting concerns:
-  - JWT Security Filter
-  - Global Exception Handler
-  - MapStruct Mappers
-  - Gemini API client integration
-
----
-
-## Tech Stack
-
-- Java 21
-- Spring Boot
-- Spring Security (JWT)
-- PostgreSQL
-- Spring Data JPA
-- MapStruct
-- Maven
-- Docker / Docker Compose
-- Gemini API (Google Generative AI)
-
----
-
-## Project Structure
-
+Tech Stack
+ComponentTechnologyLanguageJava 21FrameworkSpring Boot 3.xSecuritySpring Security with JWTDatabasePostgreSQLORMSpring Data JPA and HibernateMappingMapStructBuild ToolMavenContainerizationDocker and Docker ComposeAI IntegrationGoogle Gemini API
+Project Structure
 src/main/java/com/Blog/AIBlog/
-├── Controller
-│   └── Impl
-├── Service
-│   └── Impl
-├── Repository
-├── Entity
-├── Dto
-│   ├── request
-│   └── response
-├── config
-├── filter
-├── util
-└── exception
+├── controller/
+│   ├── AuthController.java
+│   ├── PostController.java
+│   ├── CommentController.java
+│   ├── CategoryController.java
+│   └── GeminiController.java
+├── service/
+├── repository/
+├── entity/
+├── dto/
+│   ├── request/
+│   └── response/
+├── config/
+├── filter/
+├── util/
+└── exception/
 
-Root files:
-- Dockerfile
-- docker-compose.yml
-- .env.example
-- application.properties
-- README.md
+Root Configuration:
+├── Dockerfile
+├── docker-compose.yml
+├── .env.example
+├── pom.xml
+└── application.properties
+Getting Started
+Prerequisites
 
----
+Docker and Docker Compose (recommended)
+Or Java 21, Maven 3.8+, and PostgreSQL 14+
+Git
 
-## Configuration
+Quick Start with Docker
 
-All sensitive configuration is managed via environment variables.
+Clone the repository:
 
-### Setup
-cp .env.example .env
+bashgit clone https://github.com/Erdincfidaan/AIBLOG.git
+cd AIBLOG
 
-Do not commit .env to version control.
+Configure environment variables:
 
----
+bashcp .env.example .env
 
-## Environment Variables
+Edit .env with your configuration:
 
-### Database
-- SPRING_DATASOURCE_URL
-- SPRING_DATASOURCE_USERNAME
-- SPRING_DATASOURCE_PASSWORD
+envSPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/ai_blog
+SPRING_DATASOURCE_USERNAME=postgres
+SPRING_DATASOURCE_PASSWORD=your_password
+JWT_SECRET=your_base64_encoded_secret
+JWT_EXP=86400000
+GEMINI_API_KEY=your_gemini_api_key
+SPRING_MAIL_HOST=smtp.gmail.com
+SPRING_MAIL_PORT=587
+SPRING_MAIL_USERNAME=your_email@gmail.com
+SPRING_MAIL_PASSWORD=your_app_password
+APP_BASE_URL=http://localhost:8080
+HIBERNATE_DEFAULT_SCHEMA=ai_blog
+HIBERNATE_DDL_AUTO=update
+HIBERNATE_TIME_ZONE=Europe/Istanbul
 
-### Hibernate
-- HIBERNATE_DEFAULT_SCHEMA (default: ai_blog)
-- HIBERNATE_DDL_AUTO (default: update)
-- HIBERNATE_TIME_ZONE (default: Europe/Istanbul)
+Start the application:
 
-### JWT
-- JWT_SECRET (Base64 encoded)
-- JWT_EXP (default: 86400000)
+bashdocker compose up --build
+API available at http://localhost:8080.
 
-### Gemini
-- GEMINI_API_KEY
+Stop the application:
 
-### Mail (SMTP)
-- SPRING_MAIL_HOST
-- SPRING_MAIL_PORT
-- SPRING_MAIL_USERNAME
-- SPRING_MAIL_PASSWORD
+bashdocker compose down
+Local Setup
 
-### Application
-- APP_BASE_URL
+Prerequisites: Java 21, Maven 3.8+, PostgreSQL 14+
+Create database:
 
----
+bashcreatedb ai_blog
 
-## Installation & Running
+Update application.properties with your database credentials.
+Run the application:
 
-### Docker (Recommended)
+bash./mvnw spring-boot:run
+Environment Variables
+Database Configuration
+VariableDescriptionSPRING_DATASOURCE_URLPostgreSQL connection stringSPRING_DATASOURCE_USERNAMEDatabase usernameSPRING_DATASOURCE_PASSWORDDatabase password
+Hibernate Configuration
+VariableDescriptionDefaultHIBERNATE_DEFAULT_SCHEMADefault schema nameai_blogHIBERNATE_DDL_AUTOSchema update strategyupdateHIBERNATE_TIME_ZONEApplication timezoneEurope/Istanbul
+JWT Configuration
+VariableDescriptionJWT_SECRETBase64-encoded secret keyJWT_EXPToken expiration time in milliseconds
+External Services
+VariableDescriptionGEMINI_API_KEYGoogle Gemini API keySPRING_MAIL_HOSTSMTP server hostSPRING_MAIL_PORTSMTP server portSPRING_MAIL_USERNAMEEmail accountSPRING_MAIL_PASSWORDEmail passwordAPP_BASE_URLBase application URL
+API Endpoints
+Authentication (/api/auth)
+MethodEndpointDescriptionAuthenticationPOST/registerCreate new user accountNoPOST/loginAuthenticate and receive JWTNoGET/verifyemailVerify email with tokenNoPOST/changepasswordChange passwordYes
+Posts (/api/post)
+MethodEndpointDescriptionRoleGET/getAllPostsRetrieve all published postsPublicGET/getPostWithId/{id}Get specific post by IDPublicPOST/addPostCreate new blog postADMINPUT/updatePostUpdate existing postADMINDELETE/deletePost/{id}Delete post by IDADMINPOST/adminAutoAddPostAI-generated post creationADMIN
+Comments (/api/comment)
+MethodEndpointDescriptionRolePOST/addCommentAdd comment to postUSERPUT/updateCommentEdit your commentUSERDELETE/deleteComment/{id}Delete commentUSER
+Categories (/api/category)
+MethodEndpointDescriptionRolePOST/addCategoryCreate categoryADMINPUT/updateCategoryUpdate categoryADMINDELETE/deleteCategory/{id}Delete categoryADMINGET/getCategoryWithId/{id}Get category detailsADMINGET/getAllCategoriesList all categoriesADMIN
+Gemini AI (/api/gem)
+MethodEndpointDescriptionGET/getContent/{category}Generate AI content for category
+Authentication
+All protected endpoints require the Authorization header with a Bearer token:
+Authorization: Bearer <JWT_TOKEN>
+Token Structure
+The JWT token contains:
+json{
+  "sub": "user@example.com",
+  "role": "ADMIN",
+  "iat": 1234567890,
+  "exp": 1234571490
+}
+Roles and Permissions
+USER Role
 
-docker compose up --build
+Read all public content
+Create and manage comments
+Change password
 
-docker compose down
+ADMIN Role
 
-API available at:
-http://localhost:8080
+All USER permissions
+Create, update, delete posts
+Manage categories
+Generate AI content
 
----
+Database Schema
+users
 
-### Local Setup
+id (Primary Key)
+email (Unique)
+password (encrypted)
+full_name
+role (USER/ADMIN)
+email_verified (boolean)
+created_at
 
-./mvnw spring-boot:run
+posts
 
-Local database:
-jdbc:postgresql://localhost:5432/postgres
+id (Primary Key)
+title
+content
+category_id (Foreign Key)
+author_id (Foreign Key → users)
+created_at
+updated_at
 
----
+categories
 
-## API Documentation
+id (Primary Key)
+name
+description
+created_at
 
-### Authentication (/api/auth)
-- POST /register
-- POST /login
-- GET /verifyemail
-- POST /changepassword
+comments
 
-### Posts (/api/post)
-- GET /getAllPosts
-- GET /getPostWithId/{id}
-- POST /addPost (ADMIN)
-- PUT /updatePost (ADMIN)
-- DELETE /deletePost/{id} (ADMIN)
-- POST /adminAutoAddPost (ADMIN)
+id (Primary Key)
+content
+post_id (Foreign Key)
+author_id (Foreign Key → users)
+created_at
+updated_at
 
-### Comments (/api/comment)
-- POST /addComment (USER)
-- PUT /updateComment (USER)
-- DELETE /deleteComment/{id} (USER)
+Security Best Practices
 
-### Categories (/api/category)
-- POST /addCategory (ADMIN)
-- PUT /updateCategory (ADMIN)
-- DELETE /deleteCategory (ADMIN)
-- GET /getCategoryWithId/{id} (ADMIN)
-- GET /getAllCategories (ADMIN)
+Passwords are hashed using Spring Security
+JWT tokens with configurable expiration
+Email verification for new accounts
+Role-based access control
+Global exception handling without stack trace exposure
+Input validation on all endpoints
+HTTPS required for production
 
-### Gemini (/api/gem)
-- GET /getContent/{category}
+Configuration
+Application Properties
+propertiesserver.port=8080
+server.servlet.context-path=/
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=false
+spring.jackson.serialization.indent-output=true
+server.error.include-message=always
+server.error.include-binding-errors=always
+Troubleshooting
+Connection Refused
+If you encounter a "Connection refused" error when connecting to PostgreSQL:
 
----
+Ensure Docker container is running: docker compose ps
+Verify PostgreSQL is installed and running locally
+Check database credentials in .env file
 
-## Authentication
+JWT Token Expired
+If you receive a 401 Unauthorized error:
 
-Authorization header:
-Authorization: Bearer <JWT>
+Login again to get a new token
+Increase JWT_EXP value if needed
+Default expiration is 24 hours
 
-JWT contains:
-- user email
-- role (USER / ADMIN)
+Email Verification Failed
+SMTP connection issues:
 
----
+Verify SMTP credentials in .env file
+Enable "Less secure app access" if using Gmail
+Check firewall and port access
 
-## Application Flow
+Gemini API Error
+Invalid API key or connection errors:
 
-1. Register
-2. Verify email
-3. Login
-4. Use JWT in requests
-5. Access role-based endpoints
-6. Optional AI generation
+Verify GEMINI_API_KEY in .env file
+Check API key validity at Google Cloud Console
+Ensure API is enabled in your project
 
----
+Important Notes
 
-## Database Notes
-
-- PostgreSQL used
-- Default schema: ai_blog
-- Hibernate ddl: update
-- Docker DB host: db
-
----
-
-## Important Notes
-
-- Default registration assigns ADMIN role (development only)
-- .env file must not be committed
-- Gemini API key required for AI features
-- Docker Compose recommended
-
----
-
-## License
-No license specified.
+Default registration assigns ADMIN role (change in production)
+Never commit .env file to version control
+Always use HTTPS in production environments
+Implement rate limiting for production deployments
+Set up proper logging and monitoring
