@@ -256,20 +256,7 @@ If these do not exist, the service will fail with a not-found style error.
 ## Important Notes / Known Issues
 - **Registration assigns ADMIN role**
   - The current registration implementation sets the new user's role to `ADMIN` in `AuthServiceImpl.register`. If you expect regular users to be `USER`, update that logic accordingly.
-- **Path consistency in security rules**
-  - The security configuration permits `GET /api/posts/**` (plural), while the implemented controller base path for posts is `/api/post` (singular). This may cause unexpected authorization behavior for post read endpoints until aligned.
-- **Category delete endpoint parameter**
-  - `DELETE /api/category/deleteCategory` expects an `id` parameter; ensure the request includes it as required by the controller signature.
 - **Secrets management**
   - `.env` must never be committed. Use `.env.example` as a template and keep real credentials local.
 
-## Future Improvements
-- Align endpoint naming conventions and simplify paths (e.g., standard REST patterns: `/api/posts/{id}`).
-- Provide an OpenAPI/Swagger specification and interactive API docs.
-- Add database migrations (Flyway or Liquibase) instead of relying on `ddl-auto=update`.
-- Add integration tests (Testcontainers for PostgreSQL) and CI pipeline.
-- Add explicit support for initializing an admin user and default categories in a safe, repeatable way.
-- Improve error response schema documentation and add request/response examples.
 
-## License
-No license specified.
